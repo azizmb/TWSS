@@ -19,7 +19,7 @@ def SaveClassifier(classifier, filename="BayesClassifier"):
     os.system("gzip %s"%filename)
 
 # Load Classifier   
-def LoadClassifier(filename="BayesClassifier"):
+def LoadClassifier(filename="BayesClassifier.pkl"):
     os.system("gunzip %s.gz"%filename)
     fModel = open('%s'%filename,"rb")
     classifier = pickle.load(fModel)
