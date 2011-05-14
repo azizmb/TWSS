@@ -21,7 +21,29 @@ class TWSSListner(tweepy.StreamListener):
                 self.c.writerow([cls, status.text, process_tweet(status.text)])
         except Exception as e:
             print e
-       
+            
+class TWSSBuildClassifierListner(tweepy.StreamListener):
+    def __init__(self, csv_files=("general.csv", "twss.csv"), classifier="twss_classifier.pkl", **kwargs):
+        classifier = os.path.abspath(classifier)
+        self.classifier = LoadClassifier(filename=classifier)
+        
+        self.gen_writer = csv.writer(open(csv_files[0], "wb"))
+        self.twss_writer = csv.writer(open(csv_files[1], "wb"))
+        
+        super(TWSSBuildClassifierListner, self).__init__(**kwargs)
+    
+    def on_status(self, status):
+        try:
+            print status.text
+            cls = raw_input("TWSS? ")
+            if cls.lower() == "y":
+                writer = self.twss_writer
+            else:
+                writer = self.gen_writer
+            writer.writerow([process_tweet(status.text)])
+        except Exception as e:
+            print e
+        
 class InReplyListener(tweepy.StreamListener):
     def __init__(self, csv_file=None, tweet_processor=None, **kwargs):
         self.tweet_processor = tweet_processor

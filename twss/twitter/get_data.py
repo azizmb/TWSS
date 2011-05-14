@@ -1,14 +1,21 @@
 from getpass import getpass
 
 import tweepy
-from tweepy import Status, Cursor
+from tweepy import Status, Cursor, Stream
 from tweepy.utils import import_simplejson
 json = import_simplejson()
 
-from listners import InReplyListener
+from listners import InReplyListener, TWSSBuildClassifierListner
 from general import process_tweet
 
-
+def interactive(username=None, password=None, filenames=None):
+    if not username:
+        username = raw_input('Username: ').strip()
+    if not password:
+        password = getpass("Password: ").strip()
+    s = Stream(username, password, TWSSBuildClassifierListner())
+    s.sample()
+    
 def from_stream(username=None, password=None, track=[], filename="twitter_twss.csv", limit=None):
     if not username:
         username = raw_input('Username: ').strip()
