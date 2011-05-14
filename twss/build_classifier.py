@@ -5,16 +5,6 @@ from itertools import chain
 
 from general import SaveClassifier
 
-def process_string(string):
-    #string = ''.join(c for c in unicodedata.normalize('NFD', string) if unicodedata.category(c) != 'Mn')
-    string = re.compile(r"\b\w\w+\b", re.U).findall(string)
-    return string
-
-def word_features(words, score_fn=BAM.chi_sq, n=200):
-    bigram_finder = BigramCollocationFinder.from_words(words)
-    bigrams = bigram_finder.nbest(score_fn, n)
-    return dict((bg, True) for bg in chain(words, bigrams))
-
 
 def main(argv):
     
