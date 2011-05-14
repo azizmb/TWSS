@@ -1,5 +1,10 @@
+import os, pickle, csv, random, nltk, re, sys, unicodedata
+
 from textwrap import TextWrapper
-import os, pickle
+from nltk.collocations import BigramCollocationFinder
+from nltk.metrics import BigramAssocMeasures as BAM
+from itertools import chain
+
 
 def pretty_print_status(status):
     status_wrapper = TextWrapper(width=60, initial_indent=' ', subsequent_indent=' ')
@@ -8,18 +13,18 @@ def pretty_print_status(status):
 
 # Save Classifier
 def SaveClassifier(classifier, filename="BayesClassifier"):
-    fModel = open('%s.pkl'%filename,"wb")
+    fModel = open('%s'%filename,"wb")
     pickle.dump(classifier, fModel,1)
     fModel.close()
-    os.system("gzip %s.pkl"%filename)
+    os.system("gzip %s"%filename)
 
 # Load Classifier   
 def LoadClassifier(filename="BayesClassifier"):
-    os.system("gunzip %s.pkl.gz"%filename)
-    fModel = open('%s.pkl'%filename,"rb")
+    os.system("gunzip %s.gz"%filename)
+    fModel = open('%s'%filename,"rb")
     classifier = pickle.load(fModel)
     fModel.close()
-    os.system("gzip %s.pkl"%filename)
+    os.system("gzip %s"%filename)
     return classifier 
 
 def process_string(string):

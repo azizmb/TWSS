@@ -1,10 +1,6 @@
 import csv, random, nltk, re, sys, unicodedata
-from nltk.collocations import BigramCollocationFinder
-from nltk.metrics import BigramAssocMeasures as BAM
-from itertools import chain
 
-from general import SaveClassifier
-
+from general import SaveClassifier, word_features, process_string
 
 def main(argv):
     
@@ -35,7 +31,7 @@ def main(argv):
     classifier = nltk.NaiveBayesClassifier.train(feature_set)
     
     print "Saving classifier..."
-    SaveClassifier("twss_classifier")
+    SaveClassifier(classifier, "twss_classifier.pkl")
     
     
 if __name__ == '__main__':
