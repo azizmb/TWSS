@@ -4,7 +4,7 @@ from textwrap import TextWrapper
 from nltk.collocations import BigramCollocationFinder
 from nltk.metrics import BigramAssocMeasures as BAM
 from itertools import chain
-
+import ttp
 
 def pretty_print_status(status):
     status_wrapper = TextWrapper(width=60, initial_indent=' ', subsequent_indent=' ')
@@ -35,3 +35,12 @@ def word_features(words, score_fn=BAM.chi_sq, n=200):
     bigram_finder = BigramCollocationFinder.from_words(words)
     bigrams = bigram_finder.nbest(score_fn, n)
     return dict((bg, True) for bg in chain(words, bigrams))
+
+def process_tweet(string):
+    string = ttp.URL_REGEX.sub("", string)
+    string = ttp.HASHTAG_REGEX.sub("", string)
+    string = ttp.REPLY_REGEX.sub("", string)
+    string = ttp.USERNAME_REGEX.sub("", string)
+    string = ttp.LIST_REGEX.sub("", string)
+    string = string.replace("&quot;", "").replace("&lt;", "").replace("&gt;", "")
+    return string
