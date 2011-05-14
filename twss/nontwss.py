@@ -10,11 +10,11 @@ import webbrowser
 
 class StreamWatcherListener(tweepy.StreamListener):
     
-    def __init__(self, *args, filename=None, **kwargs):
+    def __init__(self, *args, **kwargs):
         filename = kwargs.get("filename", "general.csv")
         self.c = csv.writer(open('general.csv', 'wb'))
         super(StreamWatcherListener, self).__init__(*args, **kwargs)
-
+        
     def on_data(self, data):
         """Called when raw data is received from connection.
 
@@ -22,10 +22,10 @@ class StreamWatcherListener(tweepy.StreamListener):
         the stream data. Return False to stop stream and close connection.
         """
 
-        if 'in_reply_to_status_id' in data:
-            if data['in_reply_to_status_id']:
-                if self.on_status(status) is False:
-                    return False
+        if 'in_reply_to_status_id' in data and '"lang":"en"' in data:
+            status = Status.parse(self.api, json.loads(data))
+            if self.on_status(status) is False:
+                return False
         elif 'delete' in data:
             delete = json.loads(data)['delete']['status']
             if self.on_delete(delete['id'], delete['user_id']) is False:
@@ -34,12 +34,12 @@ class StreamWatcherListener(tweepy.StreamListener):
             if self.on_limit(json.loads(data)['limit']['track']) is False:
                 return False
 
-    
     def on_status(self, status):
         try:
             text = status.text
-            c.writerow(["general", text])
-        except:
+            self.c.writerow(["general", text])
+        except Exception as e:
+            print e
             # Catch any unicode errors while printing to console
             # and just ignore them to avoid breaking application.
             pass
@@ -58,7 +58,7 @@ def main():
     username = "azizbookwala"
     password = "cool435toad"
     stream = tweepy.Stream(username, password, StreamWatcherListener(), timeout=None)
-    stream.sample(count=1000)
+    stream.sample()
 
 
 if __name__ == '__main__':
