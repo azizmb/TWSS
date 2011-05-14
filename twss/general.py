@@ -39,7 +39,7 @@ def word_features(words, score_fn=BAM.chi_sq, n=200):
 def process_tweet(string):
     string = ttp.URL_REGEX.sub("", string)
     string = ttp.HASHTAG_REGEX.sub("", string)
-    string = ttp.REPLY_REGEX.sub("", string)
+    #string = ttp.REPLY_REGEX.sub("", string)
     string = ttp.USERNAME_REGEX.sub("", string)
     string = ttp.LIST_REGEX.sub("", string)
     string = string.replace("&quot;", "").replace("&lt;", "").replace("&gt;", "")
