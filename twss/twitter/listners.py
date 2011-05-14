@@ -5,7 +5,7 @@ from general import pretty_print_status, LoadClassifier, process_string, process
 
 class TWSSListner(tweepy.StreamListener):
     def __init__(self, csv_file=None, classifier="twss_classifier.pkl", **kwargs):
-        if csv:
+        if csv_file:
             self.c = csv.writer(open(csv_file, 'wb'))
         else:
             self.c = None
@@ -21,7 +21,7 @@ class TWSSListner(tweepy.StreamListener):
                 self.c.writerow([cls, status.text, process_tweet(status.text)])
         except Exception as e:
             print e
-        
+       
 class InReplyListener(tweepy.StreamListener):
     def __init__(self, csv_file=None, tweet_processor=None, **kwargs):
         self.tweet_processor = tweet_processor
@@ -44,4 +44,3 @@ class InReplyListener(tweepy.StreamListener):
         except Exception as e:
             print e
             pass
-        
