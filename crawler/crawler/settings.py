@@ -15,3 +15,7 @@ DEFAULT_ITEM_CLASS = 'crawler.items.CrawlerItem'
 #USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 USER_AGENT = 'Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20100101 Firefox/4.0.1'
 
+ITEM_PIPELINES = [
+    'crawler.pipelines.DuplicatesPipeline',
+]
+
