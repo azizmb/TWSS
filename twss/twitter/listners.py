@@ -16,12 +16,12 @@ class TWSSListner(tweepy.StreamListener):
     def on_status(self, status):
         try:
             print status.text
-            cls = self.classifier.classify(word_features(process_string(process_tweet(status.text))))
+            cls = self.classifier.classify(word_features(process_string(status.text)))
             if self.c:
-                self.c.writerow([cls, status.text, process_tweet(status.text)])
+                self.c.writerow([cls, status.text, status.text])
         except Exception as e:
             print e
-            
+
 class TWSSBuildClassifierListner(tweepy.StreamListener):
     def __init__(self, csv_files=("general.csv", "twss.csv"), classifier="twss_classifier.pkl", **kwargs):
         classifier = os.path.abspath(classifier)
@@ -65,4 +65,3 @@ class InReplyListener(tweepy.StreamListener):
                     self.c.writerow([text, ])
         except Exception as e:
             print e
-            pass

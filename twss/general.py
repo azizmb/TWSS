@@ -28,7 +28,7 @@ def LoadClassifier(filename="BayesClassifier.pkl"):
     return classifier 
 
 def process_string(string):
-    string = re.compile(r"\b\w\w+\b", re.U).findall(string)
+    string = re.compile(r"\b\w\w+\b", re.U).findall(string.lower())
     return string
 
 def word_features(words, score_fn=BAM.chi_sq, n=200):

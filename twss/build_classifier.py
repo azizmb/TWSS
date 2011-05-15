@@ -25,9 +25,9 @@ def main(argv):
     m = min((len(general), len(twss)))
     
     print "Compiling corpus..."
-    corpus = twss[:m] + general[:m]
+    corpus = twss + general 
     random.shuffle(corpus)
-    
+       
     feature_set = [(word_features(l), g) for (l, g) in corpus]
     
     print "Building classifier..."
